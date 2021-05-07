@@ -26,9 +26,7 @@ function showPage(list, page) {
   function createInnerHtml(student) {
     return ` <li class="student-item cf">
     <div class="student-details">
-      <img class="avatar" src="${
-        student.picture.thumbnail
-      }" alt="Profile Picture">
+      <img class="avatar" src="${student.picture.large}" alt="Profile Picture">
       <h3>${student.name.first + " " + student.name.last}</h3>
       <span class="email">${student.email}</span>
     </div>
@@ -39,7 +37,22 @@ function showPage(list, page) {
   }
 }
 
-showPage(data, 0);
+function appendPagination(list) {
+  const totalButtons = Math.ceil(list.length / items_per_page);
+  const buttonList = document.querySelector(".link-list");
+  buttonList.innerHTML = "";
+  for (let i = 1; i <= totalButtons; i++) {
+    buttonList.insertAdjacentHTML(
+      "beforeend",
+      `<li>
+            <button type="button">${i}</button>
+      </li>`
+    );
+  }
+}
+
+appendPagination(data);
+//showPage(data, 0);
 //showPage(data, 1);
 //showPage(data, 2);
 //showPage(data, 9);
