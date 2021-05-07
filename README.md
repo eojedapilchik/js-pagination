@@ -3,7 +3,8 @@
 ---
 
 This is Pagination example project.  
-No JS frameworks. It's built with plain Javascript, html and CSS.
+No JS frameworks.  
+It's built with plain Javascript, html and CSS.  
 Data is read using a JSON and parsed into pages using 9 items per page.
 
 ### Instructions:
