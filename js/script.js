@@ -3,25 +3,41 @@
  */
 
 const items_per_page = 9;
+const buttonList = document.querySelector(".link-list");
+const student_list = document.querySelector(".student-list");
 
+buttonList.addEventListener("click", (e) => {
+  const button = e.target;
+  if ((button.tagName = "BUTTON")) {
+    changeActiveButton(button);
+    showPage(data, button.textContent - 1);
+  }
+
+  /**
+   * Change the active class for the clicked button and resets the rest
+   * @param {*} button - button that must be have active class
+   */
+  function changeActiveButton(button) {
+    for (const btn of buttonList.children) {
+      btn.firstElementChild.className = ""; // removes active class for all button
+    }
+    button.className = "active";
+  }
+});
+
+/**
+ * Display one page according to the number of item_per_page and data array
+ * @param {*} list  - data to be displayed
+ * @param {*} page  - page number
+ */
 function showPage(list, page) {
   const start_index = page * items_per_page;
   const end_index = start_index + items_per_page;
-  const student_list = document.querySelector(".student-list");
   student_list.innerHTML = "";
-  let html_li = "";
+
   for (let i = start_index; i < end_index; i++) {
-    //element = createElement("li", ["className"], ["student-item cf"]);
-    html_li += createInnerHtml(list[i]);
+    student_list.insertAdjacentHTML("beforeend", createInnerHtml(list[i]));
   }
-  student_list.innerHTML = html_li;
-  /*function createElement(type, [...attrs], [...values]) {
-    const element = document.createElement(type);
-    for (const i in attrs) {
-      element[attrs[i]] = values[i];
-    }
-    return element;
-  }*/
 
   function createInnerHtml(student) {
     return ` <li class="student-item cf">
@@ -37,9 +53,12 @@ function showPage(list, page) {
   }
 }
 
+/**
+ * Creates and inserts/appends the elements needed for the pagination buttons
+ * @param {*} list - data list of the students
+ */
 function appendPagination(list) {
   const totalButtons = Math.ceil(list.length / items_per_page);
-  const buttonList = document.querySelector(".link-list");
   buttonList.innerHTML = "";
   for (let i = 1; i <= totalButtons; i++) {
     buttonList.insertAdjacentHTML(
@@ -49,16 +68,8 @@ function appendPagination(list) {
       </li>`
     );
   }
+  buttonList.children[0].firstElementChild.className = "active";
 }
 
 appendPagination(data);
-//showPage(data, 0);
-//showPage(data, 1);
-//showPage(data, 2);
-//showPage(data, 9);
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
-
-// Call functions
+showPage(data, 0);
