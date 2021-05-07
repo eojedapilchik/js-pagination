@@ -5,6 +5,41 @@
 const items_per_page = 9;
 const buttonList = document.querySelector(".link-list");
 const student_list = document.querySelector(".student-list");
+const header = document.querySelector(".header");
+
+header.insertAdjacentHTML(
+  "beforeend",
+  `<p><label for="search" class="student-search">
+  <span>Search by name</span>
+  <input id="search" placeholder="Search by name...">
+  <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+</label><p>`
+);
+
+header.addEventListener("keyup", (event) => {
+  const searchText = event.target;
+  if (
+    (searchText.tagName = "INPUT") // filters keydown only to letters and numbers
+  ) {
+    filteredData = filterData(searchText.value.toLowerCase().trim());
+    appendPagination(filteredData);
+    showPage(filteredData, 0);
+  }
+
+  /**
+   * Filters de Data array to display only the filtered items
+   *
+   * @param {string} searchText - Text to filter (by fields: first name and last name)
+   * @returns
+   */
+  function filterData(searchText) {
+    return data.filter(
+      (item) =>
+        item.name.first.toLowerCase().includes(searchText) ||
+        item.name.last.toLowerCase().includes(searchText)
+    );
+  }
+});
 
 buttonList.addEventListener("click", (e) => {
   const button = e.target;
@@ -38,8 +73,12 @@ function showPage(list, page) {
       : list.length; // make sure not to have a end_index greater than the list size
   student_list.innerHTML = "";
 
-  for (let i = start_index; i < end_index; i++) {
-    student_list.insertAdjacentHTML("beforeend", createInnerHtml(list[i]));
+  if (list.length > 0) {
+    for (let i = start_index; i < end_index; i++) {
+      student_list.insertAdjacentHTML("beforeend", createInnerHtml(list[i]));
+    }
+  } else {
+    student_list.insertAdjacentHTML("beforeend", "<p>No results found!</p>");
   }
 
   function createInnerHtml(student) {
@@ -63,15 +102,17 @@ function showPage(list, page) {
 function appendPagination(list) {
   const totalButtons = Math.ceil(list.length / items_per_page);
   buttonList.innerHTML = "";
-  for (let i = 1; i <= totalButtons; i++) {
-    buttonList.insertAdjacentHTML(
-      "beforeend",
-      `<li>
+  if (totalButtons > 1) {
+    for (let i = 1; i <= totalButtons; i++) {
+      buttonList.insertAdjacentHTML(
+        "beforeend",
+        `<li>
             <button type="button">${i}</button>
       </li>`
-    );
+      );
+    }
+    buttonList.children[0].firstElementChild.className = "active";
   }
-  buttonList.children[0].firstElementChild.className = "active";
 }
 
 appendPagination(data);
