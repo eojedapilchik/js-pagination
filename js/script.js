@@ -32,7 +32,10 @@ buttonList.addEventListener("click", (e) => {
  */
 function showPage(list, page) {
   const start_index = page * items_per_page;
-  const end_index = start_index + items_per_page;
+  const end_index =
+    start_index + items_per_page < list.length
+      ? start_index + items_per_page
+      : list.length; // make sure not to have a end_index greater than the list size
   student_list.innerHTML = "";
 
   for (let i = start_index; i < end_index; i++) {
